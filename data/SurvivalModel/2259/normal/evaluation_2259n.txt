@@ -1,0 +1,10 @@
+evaluation campaign 2259 mode normal basebid 0
+laplace 3
+eval mode = ANLP
+bucket 301 step 1
+Average negative log probability = 5.29369734752  N = 4171.0
+AUC = 0.622278664731
+CROSS = 0.484136375568
+eval mode = KLD
+bucket 301 step 1
+KLD = 0.173205617808  N = 4171.0

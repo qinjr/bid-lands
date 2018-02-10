@@ -1,0 +1,7 @@
+baseline_kdd15 campaign 2259 basebid 0
+bucket 301 step 1
+Average negative log probability = 7.37218436741  N = 4171.0
+AUC = 0.680671030579
+CROSS = 0.632852278412
+bucket 301 step 1
+KLD = 0.921496897531  N = 4171.0

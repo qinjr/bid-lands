@@ -1,0 +1,10 @@
+evaluation campaign 2259 mode survival basebid 0
+laplace 3
+eval mode = ANLP
+bucket 301 step 1
+Average negative log probability = 5.59373885648  N = 4171.0
+AUC = 0.625544267054
+CROSS = 0.492726157736
+eval mode = KLD
+bucket 301 step 1
+KLD = 0.148955231687  N = 4171.0

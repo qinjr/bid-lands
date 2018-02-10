@@ -138,7 +138,7 @@ def baseline_kdd15_Rversion0(info):
 def baseline_kdd15_Rversion_demo(campaign_list):
     BASE_BID = '0'
     IFROOT_TRAIN = '../data/kdd15/WinningPrice/'
-    IFROOT_TEST = '../../deep-bid-lands/data/deep-bid-lands-data/'
+    IFROOT_TEST = '../deep-bid-lands-data/'
     OFROOT = '../data/baseline_kdd15_Rversion/'
 
     q = {}
