@@ -14,5 +14,5 @@ To run the demo, just execute
 ```
 python demo.py
 ```
-and the result(AUC, Log-Loss and ANLP) will be printed on the screen. And the result can also be found in `data/baseline_kdd15_Rversion`(for `MM`) and `data/SurvivalModel`(for `STM`), the results files are named in the pattern `evalution_xxxx.txt`
+and the result(AUC, Log-Loss and ANLP) will be printed on the screen. And the result can also be found in `data/baseline_kdd15_Rversion`(for `MM`) and `data/SurvivalModel`(for `STM`), the results files are named in the pattern `evalution_xxxx.txt`.
 To run the file with full volume data, just change the `campaign_list` variable in `python/demo.py` and execute it.
