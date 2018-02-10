@@ -8,8 +8,8 @@ from merge_eval import  merge_eval
 import os
 import time
 
-IFROOT = '..\\make-ipinyou-data\\'
-OFROOT = '..\\data\\SurvivalModel\\'
+IFROOT = '../make-ipinyou-data/'
+OFROOT = '../data/SurvivalModel/'
 BASE_BID = '0'
 
 # generate DecisionTree and fout
@@ -33,31 +33,31 @@ def main(campaign_list):
             info.treeDepth = TREE_DEPTH
 
             # create os directory
-            if not os.path.exists(OFROOT+campaign+'\\'+modeName):
-                os.makedirs(OFROOT+campaign+'\\'+modeName)
+            if not os.path.exists(OFROOT+campaign+'/'+modeName):
+                os.makedirs(OFROOT+campaign+'/'+modeName)
             # info assignment
-            info.fname_trainlog = IFROOT+campaign+'\\train.log.txt'
-            info.fname_testlog = IFROOT+campaign+'\\test.log.txt'
-            info.fname_nodeData = OFROOT+campaign+'\\'+modeName+'\\nodeData_'+campaign+suffix+'.txt'
-            info.fname_nodeInfo = OFROOT+campaign+'\\'+modeName+'\\nodeInfos_'+campaign+suffix+'.txt'
+            info.fname_trainlog = IFROOT+campaign+'/train.log.txt'
+            info.fname_testlog = IFROOT+campaign+'/test.log.txt'
+            info.fname_nodeData = OFROOT+campaign+'/'+modeName+'/nodeData_'+campaign+suffix+'.txt'
+            info.fname_nodeInfo = OFROOT+campaign+'/'+modeName+'/nodeInfos_'+campaign+suffix+'.txt'
 
-            info.fname_trainbid = IFROOT+campaign+'\\train_bid.txt'
-            info.fname_testbid = IFROOT+campaign+'\\test_bid.txt'
-            info.fname_baseline = OFROOT+campaign+'\\'+modeName+'\\baseline_'+campaign+suffix+'.txt'
+            info.fname_trainbid = IFROOT+campaign+'/train_bid.txt'
+            info.fname_testbid = IFROOT+campaign+'/test_bid.txt'
+            info.fname_baseline = OFROOT+campaign+'/'+modeName+'/baseline_'+campaign+suffix+'.txt'
 
-            info.fname_monitor = OFROOT+campaign+'\\'+modeName+'\\monitor_'+campaign+suffix+'.txt'
-            info.fname_testKmeans = OFROOT+campaign+'\\'+modeName+'\\testKmeans_'+campaign+suffix+'.txt'
-            info.fname_testSurvival = OFROOT+campaign+'\\'+modeName+'\\testSurvival_'+campaign+suffix+'.txt'
+            info.fname_monitor = OFROOT+campaign+'/'+modeName+'/monitor_'+campaign+suffix+'.txt'
+            info.fname_testKmeans = OFROOT+campaign+'/'+modeName+'/testKmeans_'+campaign+suffix+'.txt'
+            info.fname_testSurvival = OFROOT+campaign+'/'+modeName+'/testSurvival_'+campaign+suffix+'.txt'
 
-            info.fname_evaluation = OFROOT+campaign+'\\'+modeName+'\\evaluation_'+campaign+suffix+'.txt'
-            info.fname_baseline_q = OFROOT+campaign+'\\'+modeName+'\\baseline_q_'+campaign+suffix+'.txt'
-            info.fname_tree_q = OFROOT+campaign+'\\'+modeName+'\\tree_q_'+campaign+suffix+'.txt'
-            info.fname_baseline_w = OFROOT+campaign+'\\'+modeName+'\\baseline_w_'+campaign+suffix+'.txt'
-            info.fname_tree_w = OFROOT+campaign+'\\'+modeName+'\\tree_w_'+campaign+suffix+'.txt'
+            info.fname_evaluation = OFROOT+campaign+'/'+modeName+'/evaluation_'+campaign+suffix+'.txt'
+            info.fname_baseline_q = OFROOT+campaign+'/'+modeName+'/baseline_q_'+campaign+suffix+'.txt'
+            info.fname_tree_q = OFROOT+campaign+'/'+modeName+'/tree_q_'+campaign+suffix+'.txt'
+            info.fname_baseline_w = OFROOT+campaign+'/'+modeName+'/baseline_w_'+campaign+suffix+'.txt'
+            info.fname_tree_w = OFROOT+campaign+'/'+modeName+'/tree_w_'+campaign+suffix+'.txt'
 
-            info.fname_pruneNode = OFROOT+campaign+'\\'+modeName+'\\pruneNode_'+campaign+suffix+'.txt'
-            info.fname_pruneEval = OFROOT+campaign+'\\'+modeName+'\\pruneEval_'+campaign+suffix+'.txt'
-            info.fname_testwin = OFROOT+campaign+'\\'+modeName+'\\testwin_'+campaign+suffix+'.txt'
+            info.fname_pruneNode = OFROOT+campaign+'/'+modeName+'/pruneNode_'+campaign+suffix+'.txt'
+            info.fname_pruneEval = OFROOT+campaign+'/'+modeName+'/pruneEval_'+campaign+suffix+'.txt'
+            info.fname_testwin = OFROOT+campaign+'/'+modeName+'/testwin_'+campaign+suffix+'.txt'
             step = STEP
             # baseline
             print campaign+" "+modeName+" baseline begins."
@@ -112,35 +112,35 @@ def paraTune(campaign_list):
                 info.treeDepth = TREE_DEPTH
 
                 # create os directory
-                if not os.path.exists(OFROOT+campaign+'\\'+modeName):
-                    os.makedirs(OFROOT+campaign+'\\'+modeName)
-                if not os.path.exists(OFROOT+campaign+'\\'+modeName+'\\paraTune'):
-                    os.makedirs(OFROOT+campaign+'\\'+modeName+'\\paraTune')
-                if not os.path.exists(OFROOT+campaign+'\\'+modeName+'\\paraTune\\leafSize_'+str(leafSize)):
-                    os.makedirs(OFROOT+campaign+'\\'+modeName+'\\paraTune\\leafSize_'+str(leafSize))
+                if not os.path.exists(OFROOT+campaign+'/'+modeName):
+                    os.makedirs(OFROOT+campaign+'/'+modeName)
+                if not os.path.exists(OFROOT+campaign+'/'+modeName+'/paraTune'):
+                    os.makedirs(OFROOT+campaign+'/'+modeName+'/paraTune')
+                if not os.path.exists(OFROOT+campaign+'/'+modeName+'/paraTune/leafSize_'+str(leafSize)):
+                    os.makedirs(OFROOT+campaign+'/'+modeName+'/paraTune/leafSize_'+str(leafSize))
                 # info assignment
-                info.fname_trainlog = IFROOT+campaign+'\\train.log.txt'
-                info.fname_testlog = IFROOT+campaign+'\\test.log.txt'
-                info.fname_nodeData = OFROOT+campaign+'\\'+modeName+'\\paraTune\\leafSize_'+str(leafSize)+'\\nodeData_'+campaign+suffix+'.txt'
-                info.fname_nodeInfo = OFROOT+campaign+'\\'+modeName+'\\paraTune\\leafSize_'+str(leafSize)+'\\nodeInfos_'+campaign+suffix+'.txt'
+                info.fname_trainlog = IFROOT+campaign+'/train.log.txt'
+                info.fname_testlog = IFROOT+campaign+'/test.log.txt'
+                info.fname_nodeData = OFROOT+campaign+'/'+modeName+'/paraTune/leafSize_'+str(leafSize)+'/nodeData_'+campaign+suffix+'.txt'
+                info.fname_nodeInfo = OFROOT+campaign+'/'+modeName+'/paraTune/leafSize_'+str(leafSize)+'/nodeInfos_'+campaign+suffix+'.txt'
 
-                info.fname_trainbid = IFROOT+campaign+'\\train_bid.txt'
-                info.fname_testbid = IFROOT+campaign+'\\test_bid.txt'
-                info.fname_baseline = OFROOT+campaign+'\\'+modeName+'\\paraTune\\leafSize_'+str(leafSize)+'\\baseline_'+campaign+suffix+'.txt'
+                info.fname_trainbid = IFROOT+campaign+'/train_bid.txt'
+                info.fname_testbid = IFROOT+campaign+'/test_bid.txt'
+                info.fname_baseline = OFROOT+campaign+'/'+modeName+'/paraTune/leafSize_'+str(leafSize)+'/baseline_'+campaign+suffix+'.txt'
 
-                info.fname_monitor = OFROOT+campaign+'\\'+modeName+'\\paraTune\\leafSize_'+str(leafSize)+'\\monitor_'+campaign+suffix+'.txt'
-                info.fname_testKmeans = OFROOT+campaign+'\\'+modeName+'\\paraTune\\leafSize_'+str(leafSize)+'\\testKmeans_'+campaign+suffix+'.txt'
-                info.fname_testSurvival = OFROOT+campaign+'\\'+modeName+'\\paraTune\\leafSize_'+str(leafSize)+'\\testSurvival_'+campaign+suffix+'.txt'
+                info.fname_monitor = OFROOT+campaign+'/'+modeName+'/paraTune/leafSize_'+str(leafSize)+'/monitor_'+campaign+suffix+'.txt'
+                info.fname_testKmeans = OFROOT+campaign+'/'+modeName+'/paraTune/leafSize_'+str(leafSize)+'/testKmeans_'+campaign+suffix+'.txt'
+                info.fname_testSurvival = OFROOT+campaign+'/'+modeName+'/paraTune/leafSize_'+str(leafSize)+'/testSurvival_'+campaign+suffix+'.txt'
 
-                info.fname_evaluation = OFROOT+campaign+'\\'+modeName+'\\paraTune\\leafSize_'+str(leafSize)+'\\evaluation_'+campaign+suffix+'.txt'
-                info.fname_baseline_q = OFROOT+campaign+'\\'+modeName+'\\paraTune\\leafSize_'+str(leafSize)+'\\baseline_q_'+campaign+suffix+'.txt'
-                info.fname_tree_q = OFROOT+campaign+'\\'+modeName+'\\paraTune\\leafSize_'+str(leafSize)+'\\tree_q_'+campaign+suffix+'.txt'
-                info.fname_baseline_w = OFROOT+campaign+'\\'+modeName+'\\paraTune\\leafSize_'+str(leafSize)+'\\baseline_w_'+campaign+suffix+'.txt'
-                info.fname_tree_w = OFROOT+campaign+'\\'+modeName+'\\paraTune\\leafSize_'+str(leafSize)+'\\tree_w_'+campaign+suffix+'.txt'
+                info.fname_evaluation = OFROOT+campaign+'/'+modeName+'/paraTune/leafSize_'+str(leafSize)+'/evaluation_'+campaign+suffix+'.txt'
+                info.fname_baseline_q = OFROOT+campaign+'/'+modeName+'/paraTune/leafSize_'+str(leafSize)+'/baseline_q_'+campaign+suffix+'.txt'
+                info.fname_tree_q = OFROOT+campaign+'/'+modeName+'/paraTune/leafSize_'+str(leafSize)+'/tree_q_'+campaign+suffix+'.txt'
+                info.fname_baseline_w = OFROOT+campaign+'/'+modeName+'/paraTune/leafSize_'+str(leafSize)+'/baseline_w_'+campaign+suffix+'.txt'
+                info.fname_tree_w = OFROOT+campaign+'/'+modeName+'/paraTune/leafSize_'+str(leafSize)+'/tree_w_'+campaign+suffix+'.txt'
 
-                info.fname_pruneNode = OFROOT+campaign+'\\'+modeName+'\\paraTune\\leafSize_'+str(leafSize)+'\\pruneNode_'+campaign+suffix+'.txt'
-                info.fname_pruneEval = OFROOT+campaign+'\\'+modeName+'\\paraTune\\leafSize_'+str(leafSize)+'\\pruneEval_'+campaign+suffix+'.txt'
-                info.fname_testwin = OFROOT+campaign+'\\'+modeName+'\\paraTune\\leafSize_'+str(leafSize)+'\\testwin_'+campaign+suffix+'.txt'
+                info.fname_pruneNode = OFROOT+campaign+'/'+modeName+'/paraTune/leafSize_'+str(leafSize)+'/pruneNode_'+campaign+suffix+'.txt'
+                info.fname_pruneEval = OFROOT+campaign+'/'+modeName+'/paraTune/leafSize_'+str(leafSize)+'/pruneEval_'+campaign+suffix+'.txt'
+                info.fname_testwin = OFROOT+campaign+'/'+modeName+'/paraTune/leafSize_'+str(leafSize)+'/testwin_'+campaign+suffix+'.txt'
                 # baseline
                 print campaign,modeName,'leafSize',leafSize,"baseline begins."
                 print time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))

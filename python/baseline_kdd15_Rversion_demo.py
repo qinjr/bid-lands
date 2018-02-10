@@ -4,6 +4,7 @@ from scipy.stats import norm
 from math import *
 from DecisionTree import *
 from evaluation import getANLP
+from evaluation import getAUC_CROSS
 import time
 
 DAY_LIST = ['20130607','20131019']
@@ -16,16 +17,22 @@ def getWinningPrice(ifname_price):
     fin.close()
     return w
 
-def getTestData_yzx(ifname_data):
+def getTestData_yzbx(ifname_data):
     fin = open(ifname_data,'r')
-    wt = []
 
+    wt = []
+    ground_truth = []
+    bt = []
     for line in fin:
         items = line.split()
         wt.append(eval(items[1]))
-
+        bt.append(eval(items[2]))
+        if eval(items[2]) > eval(items[1]):
+            ground_truth.append(1)
+        else:
+            ground_truth.append(0)
     fin.close()
-    return wt
+    return wt, ground_truth, bt
 
 def getQ(w,info):
     laplace = info.laplace
@@ -45,7 +52,7 @@ def baseline_kdd15_Rversion0(info):
     for day in DAY_LIST:
         tmpw = getWinningPrice(info.fname_trainlog+day+'.txt')
         w.extend(tmpw)
-    wt = getTestData_yzx(info.fname_testlog)
+    wt, ground_truth, bt = getTestData_yzbx(info.fname_testlog)
 
     # q calculation
     q = getQ(w,info)
@@ -67,13 +74,29 @@ def baseline_kdd15_Rversion0(info):
     print time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time())),"n calculation begins."
     minPrice = 0
     maxPrice = max(wt)
+    maxPriceB = max(bt)
+
     n = [0.]*UPPER
-    for pay_price in wt:
+    for i in range(len(wt)):
+        pay_price = wt[i]
         n[pay_price] += 1
+
+    nb = [0.]*UPPER
+    g = {}
+    for i in range(len(bt)):
+        pay_price = bt[i]
+        nb[pay_price] += 1
+        if not g.has_key(pay_price):
+            g[pay_price] = [ground_truth[i]]
+        else:
+            g[pay_price].append(ground_truth[i])
 
     # qt,wt calculation
     qt = calProbDistribution_n(n,minPrice,maxPrice,info)
     wt = q2w(qt)
+
+    qb = calProbDistribution_n(nb,minPrice,maxPriceB,info)
+    wb = q2w(qb)
 
     # evaluation
     fout_baseline_kdd15 = open(info.fname_baseline_kdd15,'w')
@@ -84,11 +107,16 @@ def baseline_kdd15_Rversion0(info):
         ni = deepcopy(n)
         bucket = len(qi)
         anlp,N = getANLP(qi,ni,minPrice,maxPrice)
+        auc, cross = getAUC_CROSS(wb, g)
 
         fout_baseline_kdd15.write("bucket "+str(bucket)+" step "+str(step)+"\n")
         fout_baseline_kdd15.write("Average negative log probability = "+str(anlp)+"  N = "+str(N)+"\n")
+        fout_baseline_kdd15.write("AUC = "+str(auc) + "\n")
+        fout_baseline_kdd15.write("CROSS = "+str(cross) + "\n")
         print "bucket "+str(bucket)+" step "+str(step)
         print "Average negative log probability = "+str(anlp)+"  N = "+str(N)
+        print "AUC = "+str(auc)
+        print "CROSS = "+str(cross)
 
     # KLD
     bucket = len(q)
@@ -109,9 +137,9 @@ def baseline_kdd15_Rversion0(info):
 
 def baseline_kdd15_Rversion_demo(campaign_list):
     BASE_BID = '0'
-    IFROOT_TRAIN = '..\\data\\kdd15\\WinningPrice\\'
-    IFROOT_TEST = '..\\make-ipinyou-data\\'
-    OFROOT = '..\\data\\baseline_kdd15_Rversion\\'
+    IFROOT_TRAIN = '../data/kdd15/WinningPrice/'
+    IFROOT_TEST = '../../deep-bid-lands/data/deep-bid-lands-data/'
+    OFROOT = '../data/baseline_kdd15_Rversion/'
 
     q = {}
     w = {}
@@ -127,10 +155,10 @@ def baseline_kdd15_Rversion_demo(campaign_list):
         info.campaign = campaign
         info.laplace = LAPLACE
         info.fname_trainlog = IFROOT_TRAIN+'price_all_'
-        info.fname_testlog = IFROOT_TEST+campaign+'\\test.yzx.demo.txt'
-        info.fname_baseline_kdd15 = OFROOT+campaign+'\\baseline_kdd15_'+campaign+'.txt'
-        info.fname_baseline_kdd15_q = OFROOT+campaign+'\\baseline_kdd15_q_'+campaign+'.txt'
-        info.fname_baseline_kdd15_w = OFROOT+campaign+'\\baseline_kdd15_w_'+campaign+'.txt'
+        info.fname_testlog = IFROOT_TEST+campaign+'/test.yzbx.txt'
+        info.fname_baseline_kdd15 = OFROOT+campaign+'/baseline_kdd15_'+campaign+'.txt'
+        info.fname_baseline_kdd15_q = OFROOT+campaign+'/baseline_kdd15_q_'+campaign+'.txt'
+        info.fname_baseline_kdd15_w = OFROOT+campaign+'/baseline_kdd15_w_'+campaign+'.txt'
 
         q[campaign],w[campaign] = baseline_kdd15_Rversion0(info)
 

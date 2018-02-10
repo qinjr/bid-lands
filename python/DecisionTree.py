@@ -225,9 +225,11 @@ def getTrainData(ifname_data,ifname_bid):
     fin.close()
     return dataset
 
-def getTestData(ifname_data):
+def getTestData(ifname_data, ifname_bid):
     fin = open(ifname_data,'r')
+    fbid = open(ifname_bid, 'r')
     lines = fin.readlines()
+    bid_lines = fbid.readlines()
     dataset = []
     featName = []
     i = -2
@@ -240,8 +242,10 @@ def getTestData(ifname_data):
             featName.append('winAuction')   # 31
             continue
         items = line.split()
+        items.append(str(i))            #ith row from i=0
+        items.append(bid_lines[i].split()[0])
+        items.append(bid_lines[i].split()[1])
         dataset.append(items)
-        dataset[i].append(str(i))            #ith row from i=0
     fin.close()
 
     return dataset

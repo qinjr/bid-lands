@@ -373,8 +373,8 @@ def enlargeLeafSize0(info):
 # run after paraTune:leafSize
 # generate evaluation of treeDepth with different leafSize
 def enlargeLeafSize(campaign_list):
-    IFROOT = '..\\make-ipinyou-data\\'
-    OFROOT = '..\\data\\SurvivalModel\\'
+    IFROOT = '../make-ipinyou-data/'
+    OFROOT = '../data/SurvivalModel/'
     BASE_BID = '0'
 
     suffix_list = ['n','s','f']
@@ -398,24 +398,24 @@ def enlargeLeafSize(campaign_list):
                 info.treeDepth = TREE_DEPTH
 
                 # create os directory
-                if not os.path.exists(OFROOT+campaign+'\\'+modeName+'\\paraTune'):
-                    os.makedirs(OFROOT+campaign+'\\'+modeName+'\\paraTune')
-                if not os.path.exists(OFROOT+campaign+'\\'+modeName+'\\paraTune\\leafSize_'+str(leafSize)):
-                    os.makedirs(OFROOT+campaign+'\\'+modeName+'\\paraTune\\leafSize_'+str(leafSize))
-                ofroot = OFROOT+campaign+'\\'+modeName+'\\paraTune\\leafSize_'+str(leafSize)
-                ifroot_leafSize = OFROOT+campaign+'\\'+modeName+'\\paraTune\\leafSize_0'
+                if not os.path.exists(OFROOT+campaign+'/'+modeName+'/paraTune'):
+                    os.makedirs(OFROOT+campaign+'/'+modeName+'/paraTune')
+                if not os.path.exists(OFROOT+campaign+'/'+modeName+'/paraTune/leafSize_'+str(leafSize)):
+                    os.makedirs(OFROOT+campaign+'/'+modeName+'/paraTune/leafSize_'+str(leafSize))
+                ofroot = OFROOT+campaign+'/'+modeName+'/paraTune/leafSize_'+str(leafSize)
+                ifroot_leafSize = OFROOT+campaign+'/'+modeName+'/paraTune/leafSize_0'
 
-                info.fname_testlog = IFROOT+campaign+'\\test.log.txt'
-                info.fname_nodeData = ifroot_leafSize+'\\nodeData_'+campaign+suffix+'.txt'
-                info.fname_nodeInfo = ifroot_leafSize+'\\nodeInfos_'+campaign+suffix+'.txt'
+                info.fname_testlog = IFROOT+campaign+'/test.log.txt'
+                info.fname_nodeData = ifroot_leafSize+'/nodeData_'+campaign+suffix+'.txt'
+                info.fname_nodeInfo = ifroot_leafSize+'/nodeInfos_'+campaign+suffix+'.txt'
 
-                info.fname_nodeData2 = ofroot+'\\nodeData_'+campaign+suffix+'.txt'
-                info.fname_nodeInfo2 = ofroot+'\\nodeInfos_'+campaign+suffix+'.txt'
-                info.fname_evaluation = ofroot+'\\evaluation_'+campaign+suffix+'.txt'
-                info.fname_tree_q = ofroot+'\\tree_q_'+campaign+suffix+'.txt'
-                info.fname_tree_w = ofroot+'\\tree_w_'+campaign+suffix+'.txt'
+                info.fname_nodeData2 = ofroot+'/nodeData_'+campaign+suffix+'.txt'
+                info.fname_nodeInfo2 = ofroot+'/nodeInfos_'+campaign+suffix+'.txt'
+                info.fname_evaluation = ofroot+'/evaluation_'+campaign+suffix+'.txt'
+                info.fname_tree_q = ofroot+'/tree_q_'+campaign+suffix+'.txt'
+                info.fname_tree_w = ofroot+'/tree_w_'+campaign+suffix+'.txt'
 
-                info.fname_testSurvival = ofroot+'\\testSurvival_'+campaign+suffix+'.txt'
+                info.fname_testSurvival = ofroot+'/testSurvival_'+campaign+suffix+'.txt'
 
                 #evaluation
                 enlargeLeafSize0(info)

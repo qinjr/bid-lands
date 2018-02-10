@@ -173,7 +173,7 @@ def getN(info):
                 break
     end_time = time.clock()
     print '\nTime cost per sample distribution forecasting:',float((end_time-start_time))/len(testset)
-    fout = open('E:\\research\\RealTimeBidding\\data\\mydata\\output\\evaluation\\final\\time.txt','w')
+    fout = open('E:/research/RealTimeBidding/data/mydata/output/evaluation/final/time.txt','w')
     fout.write("evaluation campaign "+str(info.campaign)+" mode "+MODE_NAME_LIST[info.mode]+'\n')
     fout.write("leafSize "+str(info.leafSize)+" treeDepth "+str(info.treeDepth)+" laplace "+str(info.laplace)+"\n")
     fout.write('Time cost per sample distribution forecasting: '+str(float((end_time-start_time))/len(testset))+'\n')
@@ -283,8 +283,8 @@ def treeDepthEval0(info):
 # run after paraTune:leafSize
 # generate evaluation of treeDepth with different leafSize
 def treeDepthEval(campaign_list):
-    IFROOT = '..\\make-ipinyou-data\\'
-    OFROOT = '..\\data\\SurvivalModel\\'
+    IFROOT = '../make-ipinyou-data/'
+    OFROOT = '../data/SurvivalModel/'
     BASE_BID = '0'
 
     suffix_list = ['n','s','f']
@@ -309,22 +309,22 @@ def treeDepthEval(campaign_list):
                     info.treeDepth = treeDepth
 
                     # create os directory
-                    if not os.path.exists(OFROOT+campaign+'\\'+modeName+'\\paraTune'):
-                        os.makedirs(OFROOT+campaign+'\\'+modeName+'\\paraTune')
-                    if not os.path.exists(OFROOT+campaign+'\\'+modeName+'\\paraTune\\treeDepth_'+str(treeDepth)+'_leafSize_'+str(leafSize)):
-                        os.makedirs(OFROOT+campaign+'\\'+modeName+'\\paraTune\\treeDepth_'+str(treeDepth)+'_leafSize_'+str(leafSize))
-                    ofroot = OFROOT+campaign+'\\'+modeName+'\\paraTune\\treeDepth_'+str(treeDepth)+'_leafSize_'+str(leafSize)
-                    ifroot_leafSize = OFROOT+campaign+'\\'+modeName+'\\paraTune\\leafSize_'+str(leafSize)
+                    if not os.path.exists(OFROOT+campaign+'/'+modeName+'/paraTune'):
+                        os.makedirs(OFROOT+campaign+'/'+modeName+'/paraTune')
+                    if not os.path.exists(OFROOT+campaign+'/'+modeName+'/paraTune/treeDepth_'+str(treeDepth)+'_leafSize_'+str(leafSize)):
+                        os.makedirs(OFROOT+campaign+'/'+modeName+'/paraTune/treeDepth_'+str(treeDepth)+'_leafSize_'+str(leafSize))
+                    ofroot = OFROOT+campaign+'/'+modeName+'/paraTune/treeDepth_'+str(treeDepth)+'_leafSize_'+str(leafSize)
+                    ifroot_leafSize = OFROOT+campaign+'/'+modeName+'/paraTune/leafSize_'+str(leafSize)
 
-                    info.fname_testlog = IFROOT+campaign+'\\test.log.txt'
-                    info.fname_nodeData = ifroot_leafSize+'\\nodeData_'+campaign+suffix+'.txt'
-                    info.fname_nodeInfo = ifroot_leafSize+'\\nodeInfos_'+campaign+suffix+'.txt'
+                    info.fname_testlog = IFROOT+campaign+'/test.log.txt'
+                    info.fname_nodeData = ifroot_leafSize+'/nodeData_'+campaign+suffix+'.txt'
+                    info.fname_nodeInfo = ifroot_leafSize+'/nodeInfos_'+campaign+suffix+'.txt'
 
-                    info.fname_evaluation = ofroot+'\\evaluation_'+campaign+suffix+'.txt'
-                    info.fname_tree_q = ofroot+'\\tree_q_'+campaign+suffix+'.txt'
-                    info.fname_tree_w = ofroot+'\\tree_w_'+campaign+suffix+'.txt'
+                    info.fname_evaluation = ofroot+'/evaluation_'+campaign+suffix+'.txt'
+                    info.fname_tree_q = ofroot+'/tree_q_'+campaign+suffix+'.txt'
+                    info.fname_tree_w = ofroot+'/tree_w_'+campaign+suffix+'.txt'
 
-                    info.fname_testSurvival = ofroot+'\\testSurvival_'+campaign+suffix+'.txt'
+                    info.fname_testSurvival = ofroot+'/testSurvival_'+campaign+suffix+'.txt'
 
                     #evaluation
                     treeDepthEval0(info)

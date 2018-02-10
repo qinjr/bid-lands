@@ -109,9 +109,9 @@ def baseline_kdd15_Rversion0(info):
 
 def baseline_kdd15_Rversion(campaign_list):
     BASE_BID = '0'
-    IFROOT_TRAIN = '..\\data\\kdd15\\WinningPrice\\'
-    IFROOT_TEST = '..\\make-ipinyou-data\\'
-    OFROOT = '..\\data\\baseline_kdd15_Rversion\\'
+    IFROOT_TRAIN = '../data/kdd15/WinningPrice/'
+    IFROOT_TEST = '../make-ipinyou-data/'
+    OFROOT = '../data/baseline_kdd15_Rversion/'
 
     q = {}
     w = {}
@@ -127,10 +127,10 @@ def baseline_kdd15_Rversion(campaign_list):
         info.campaign = campaign
         info.laplace = LAPLACE
         info.fname_trainlog = IFROOT_TRAIN+'price_all_'
-        info.fname_testlog = IFROOT_TEST+campaign+'\\test.yzx.txt'
-        info.fname_baseline_kdd15 = OFROOT+campaign+'\\baseline_kdd15_'+campaign+'.txt'
-        info.fname_baseline_kdd15_q = OFROOT+campaign+'\\baseline_kdd15_q_'+campaign+'.txt'
-        info.fname_baseline_kdd15_w = OFROOT+campaign+'\\baseline_kdd15_w_'+campaign+'.txt'
+        info.fname_testlog = IFROOT_TEST+campaign+'/test.yzx.txt'
+        info.fname_baseline_kdd15 = OFROOT+campaign+'/baseline_kdd15_'+campaign+'.txt'
+        info.fname_baseline_kdd15_q = OFROOT+campaign+'/baseline_kdd15_q_'+campaign+'.txt'
+        info.fname_baseline_kdd15_w = OFROOT+campaign+'/baseline_kdd15_w_'+campaign+'.txt'
 
         q[campaign],w[campaign] = baseline_kdd15_Rversion0(info)
 

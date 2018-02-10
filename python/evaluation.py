@@ -3,6 +3,7 @@ from math import log
 from random import randint
 from matplotlib.pyplot import *
 from DecisionTree import *
+from sklearn.metrics import *
 
 def isChild(p,c):
     while p<c:
@@ -172,13 +173,14 @@ def getQ(info):
     fout_w.close()
 
     print "getQ() ends."
-    return q,minPrice,maxPrice
+    return q, w, minPrice,maxPrice
 
 def getN(info):
     print "getN()"
-    testset = getTestData(info.fname_testlog)
+    testset = getTestData(info.fname_testlog, info.fname_testbid)
     nodeInfos = getNodeInfos(info)
     n = {}
+    ground_truth = {}
     priceSet = [eval(data[PAY_PRICE_INDEX]) for data in testset]
     minPrice = 0
     maxPrice = max(priceSet)
@@ -188,6 +190,11 @@ def getN(info):
             print str(i),
 
         pay_price = eval(testset[i][PAY_PRICE_INDEX])
+        win_or_not = eval(testset[i][WIN_AUCTION_INDEX])
+        my_bid = eval(testset[i][MY_BID_INDEX])
+        #print "mybid: ", my_bid
+        #print "win_or_not: ", win_or_not
+
         nodeIndex = 1
         if len(nodeInfos.keys())==0:
             if not n.has_key(nodeIndex):
@@ -209,12 +216,13 @@ def getN(info):
             if not nodeInfos.has_key(nodeIndex):
                 if not n.has_key(nodeIndex):
                     n[nodeIndex] = [0.]*UPPER
+                    ground_truth[nodeIndex] = [-1] * UPPER
                 n[nodeIndex][pay_price] += 1
-
+                ground_truth[nodeIndex][my_bid] = win_or_not
                 break
 
     print "\ngetN() ends."
-    return n,minPrice,maxPrice
+    return n, ground_truth, minPrice,maxPrice
 
 def getANLP(q,n,minPrice,maxPrice):
     anlp = 0.0
@@ -242,6 +250,35 @@ def getANLP(q,n,minPrice,maxPrice):
 
     return anlp,N
 
+def getAUC_CROSS(w, ground_truth):
+    preds = []
+    labels = []
+    if isinstance(w, dict):
+        for k in ground_truth.keys():
+            for i in range(len(ground_truth[k])):
+                #if i > len(w[k]) - 1:
+                #    break
+                #if w[k][i] < 0:
+                #    print w[k][i]
+                if ground_truth[k][i] != -1:
+                    winning_rate = w[k][i]
+                    preds.append(winning_rate)
+                    labels.append(ground_truth[k][i])
+
+        #use sklearn to calculate AUC
+        auc = roc_auc_score(labels, preds)
+        cross = log_loss(labels, preds)
+        return auc, cross
+    if isinstance(w, list):
+        for price in range(len(w)):
+            if not ground_truth.has_key(price):
+                continue
+            labels.extend(ground_truth[price])
+            preds.extend([w[price]] * len(ground_truth[price]))
+        auc = roc_auc_score(labels, preds)
+        cross = log_loss(labels, preds)
+        return auc, cross
+
 def evaluate(info):
     fout_evaluation = open(info.fname_evaluation,'w')
     fout_evaluation.write("evaluation campaign "+str(info.campaign)+" mode "+MODE_NAME_LIST[info.mode]+" basebid "+info.basebid+'\n')
@@ -249,8 +286,8 @@ def evaluate(info):
     print "evaluation campaign "+str(info.campaign)+" mode "+MODE_NAME_LIST[info.mode]+" basebid "+info.basebid
     print "laplace "+str(info.laplace)
 
-    _q,trainMinPrice,trainMaxPrice = getQ(info)
-    _n,testMinPrice,testMaxPrice = getN(info)
+    _q, _w, trainMinPrice, trainMaxPrice = getQ(info)
+    _n, _ground_truth, testMinPrice, testMaxPrice = getN(info)
     for eval_mode in EVAL_MODE_LIST:
         if eval_mode == '0':
             ### ANLP
@@ -262,15 +299,25 @@ def evaluate(info):
             for step in STEP_LIST:
                 q = deepcopy(_q)
                 n = deepcopy(_n)
+
+                w = deepcopy(_w)
+                ground_truth = deepcopy(_ground_truth)
+
                 for k in q.keys():
                     q[k] = changeBucketUniform(q[k],step)
                     bucket = len(q[k])
                 anlp,N = getANLP(q,n,trainMinPrice,trainMaxPrice)
+
+                auc, cross = getAUC_CROSS(w, ground_truth)
                 # fout_evaluation
                 fout_evaluation.write("bucket "+str(bucket)+" step "+str(step)+"\n")
                 fout_evaluation.write("Average negative log probability = "+str(anlp)+"  N = "+str(N)+"\n")
+                fout_evaluation.write("AUC = " + str(auc) + "\n")
+                fout_evaluation.write("CROSS = " + str(cross) + "\n")
                 print "bucket "+str(bucket)+" step "+str(step)
                 print "Average negative log probability = "+str(anlp)+"  N = "+str(N)
+                print "AUC = " + str(auc)
+                print "CROSS = " + str(cross)
 
             ### KLD
             fout_evaluation.write("eval mode = KLD\n")
@@ -302,8 +349,8 @@ def evaluate(info):
     return
 
 if __name__ == '__main__':
-    IFROOT = '..\\make-ipinyou-data\\'
-    OFROOT = '..\\data\\SurvivalModel\\'
+    IFROOT = '../make-ipinyou-data/'
+    OFROOT = '../data/SurvivalModel/'
     BASE_BID = '0'
 
     suffix_list = ['n','s','f']
@@ -318,39 +365,38 @@ if __name__ == '__main__':
                 suffix = suffix_list[mode]
 
                 # create os directory
-                if not os.path.exists(OFROOT+campaign+'\\'+modeName+'\\plot'):
-                    os.makedirs(OFROOT+campaign+'\\'+modeName+'\\plot')
+                if not os.path.exists(OFROOT+campaign+'/'+modeName+'/plot'):
+                    os.makedirs(OFROOT+campaign+'/'+modeName+'/plot')
 
                 info = Info()
                 info.laplace = laplace
                 info.basebid = BASE_BID
                 info.mode = mode
                 info.campaign = campaign
-                info.fname_trainlog = IFROOT+campaign+'\\train.log.txt'
-                info.fname_testlog = IFROOT+campaign+'\\test.log.txt'
-                info.fname_nodeData = OFROOT+campaign+'\\'+modeName+'\\nodeData_'+campaign+suffix+'.txt'
-                info.fname_nodeInfo = OFROOT+campaign+'\\'+modeName+'\\nodeInfos_'+campaign+suffix+'.txt'
+                info.fname_trainlog = IFROOT+campaign+'/train.log.txt'
+                info.fname_testlog = IFROOT+campaign+'/test.log.txt'
+                info.fname_nodeData = OFROOT+campaign+'/'+modeName+'/nodeData_'+campaign+suffix+'.txt'
+                info.fname_nodeInfo = OFROOT+campaign+'/'+modeName+'/nodeInfos_'+campaign+suffix+'.txt'
 
-                info.fname_trainbid = IFROOT+campaign+'\\train_bid.txt'
-                info.fname_testbid = IFROOT+campaign+'\\test_bid.txt'
-                info.fname_baseline = OFROOT+campaign+'\\'+modeName+'\\baseline_'+campaign+suffix+'.txt'
+                info.fname_trainbid = IFROOT+campaign+'/train_bid.txt'
+                info.fname_testbid = IFROOT+campaign+'/test_bid.txt'
+                info.fname_baseline = OFROOT+campaign+'/'+modeName+'/baseline_'+campaign+suffix+'.txt'
 
-                info.fname_monitor = OFROOT+campaign+'\\'+modeName+'\\monitor_'+campaign+suffix+'.txt'
-                info.fname_testKmeans = OFROOT+campaign+'\\'+modeName+'\\testKmeans_'+campaign+suffix+'.txt'
-                info.fname_testSurvival = OFROOT+campaign+'\\'+modeName+'\\testSurvival_'+campaign+suffix+'.txt'
+                info.fname_monitor = OFROOT+campaign+'/'+modeName+'/monitor_'+campaign+suffix+'.txt'
+                info.fname_testKmeans = OFROOT+campaign+'/'+modeName+'/testKmeans_'+campaign+suffix+'.txt'
+                info.fname_testSurvival = OFROOT+campaign+'/'+modeName+'/testSurvival_'+campaign+suffix+'.txt'
 
-                info.fname_evaluation = OFROOT+campaign+'\\'+modeName+'\\evaluation_'+campaign+suffix+'.txt'
-                info.fname_baseline_q = OFROOT+campaign+'\\'+modeName+'\\baseline_q_'+campaign+suffix+'.txt'
-                info.fname_tree_q = OFROOT+campaign+'\\'+modeName+'\\tree_q_'+campaign+suffix+'.txt'
-                info.fname_test_q = OFROOT+campaign+'\\'+modeName+'\\test_q_'+campaign+suffix+'.txt'
-                info.fname_baseline_w = OFROOT+campaign+'\\'+modeName+'\\baseline_w_'+campaign+suffix+'.txt'
-                info.fname_tree_w = OFROOT+campaign+'\\'+modeName+'\\tree_w_'+campaign+suffix+'.txt'
-                info.fname_test_w = OFROOT+campaign+'\\'+modeName+'\\test_w_'+campaign+suffix+'.txt'
+                info.fname_evaluation = OFROOT+campaign+'/'+modeName+'/evaluation_'+campaign+suffix+'.txt'
+                info.fname_baseline_q = OFROOT+campaign+'/'+modeName+'/baseline_q_'+campaign+suffix+'.txt'
+                info.fname_tree_q = OFROOT+campaign+'/'+modeName+'/tree_q_'+campaign+suffix+'.txt'
+                info.fname_test_q = OFROOT+campaign+'/'+modeName+'/test_q_'+campaign+suffix+'.txt'
+                info.fname_baseline_w = OFROOT+campaign+'/'+modeName+'/baseline_w_'+campaign+suffix+'.txt'
+                info.fname_tree_w = OFROOT+campaign+'/'+modeName+'/tree_w_'+campaign+suffix+'.txt'
+                info.fname_test_w = OFROOT+campaign+'/'+modeName+'/test_w_'+campaign+suffix+'.txt'
 
-                info.fname_pruneNode = OFROOT+campaign+'\\'+modeName+'\\pruneNode_'+campaign+suffix+'.txt'
-                info.fname_pruneEval = OFROOT+campaign+'\\'+modeName+'\\pruneEval_'+campaign+suffix+'.txt'
-                info.fname_testwin = OFROOT+campaign+'\\'+modeName+'\\testwin_'+campaign+suffix+'.txt'
+                info.fname_pruneNode = OFROOT+campaign+'/'+modeName+'/pruneNode_'+campaign+suffix+'.txt'
+                info.fname_pruneEval = OFROOT+campaign+'/'+modeName+'/pruneEval_'+campaign+suffix+'.txt'
+                info.fname_testwin = OFROOT+campaign+'/'+modeName+'/testwin_'+campaign+suffix+'.txt'
 
                 #evaluation
                 evaluate(info)
-

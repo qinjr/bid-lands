@@ -3,9 +3,9 @@ from DecisionTree import *
 MODEL_LIST = ['baseline_kdd15','normal_baseline','survival_baseline','normal_tree','survival_tree']
 
 def merge_eval_demo(campaign_list):
-    IFROOT = '..\\data\\SurvivalModel\\'
-    IFROOT_KDD15 = '..\\data\\baseline_kdd15_Rversion\\'
-    OFROOT = '..\\data\\evaluation\\'
+    IFROOT = '../data/SurvivalModel/'
+    IFROOT_KDD15 = '../data/baseline_kdd15_Rversion/'
+    OFROOT = '../data/evaluation/'
     suffix_list = ['n','s','f']
 
     params_anlp = {}
@@ -71,7 +71,7 @@ def merge_eval_demo(campaign_list):
                 mode_name = MODE_NAME_LIST[mode]
                 # baseline
                 i = 0
-                ifname = IFROOT+campaign+'\\'+mode_name+'\\baseline_'+campaign+suffix_list[mode]+'.txt'
+                ifname = IFROOT+campaign+'/'+mode_name+'/baseline_'+campaign+suffix_list[mode]+'.txt'
                 fin = open(ifname,'r')
                 lines = fin.readlines()
                 for line in lines:
@@ -90,8 +90,8 @@ def merge_eval_demo(campaign_list):
 
                 # evaluation anlp
                 i = 0
-                #ifname = IFROOT+campaign+'\\'+mode_name+'\\paraTune\\'+params_anlp[mode][campaign]+'\\evaluation_'+campaign+suffix_list[mode]+'.txt'
-                ifname = IFROOT+campaign+'\\'+mode_name+'\\evaluation_'+campaign+suffix_list[mode]+'.txt'
+                #ifname = IFROOT+campaign+'/'+mode_name+'/paraTune/'+params_anlp[mode][campaign]+'/evaluation_'+campaign+suffix_list[mode]+'.txt'
+                ifname = IFROOT+campaign+'/'+mode_name+'/evaluation_'+campaign+suffix_list[mode]+'.txt'
                 fin = open(ifname,'r')
                 lines = fin.readlines()
                 for line in lines:
@@ -107,8 +107,8 @@ def merge_eval_demo(campaign_list):
 
                 # evaluation kld
                 i = 0
-                #ifname = IFROOT+campaign+'\\'+mode_name+'\\paraTune\\'+params_kld[mode][campaign]+'\\evaluation_'+campaign+suffix_list[mode]+'.txt'
-                ifname = IFROOT+campaign+'\\'+mode_name+'\\evaluation_'+campaign+suffix_list[mode]+'.txt'
+                #ifname = IFROOT+campaign+'/'+mode_name+'/paraTune/'+params_kld[mode][campaign]+'/evaluation_'+campaign+suffix_list[mode]+'.txt'
+                ifname = IFROOT+campaign+'/'+mode_name+'/evaluation_'+campaign+suffix_list[mode]+'.txt'
                 fin = open(ifname,'r')
                 lines = fin.readlines()
                 for line in lines:
@@ -124,7 +124,7 @@ def merge_eval_demo(campaign_list):
 
             # kdd15
             i = 0
-            ifname = IFROOT_KDD15+campaign+'\\baseline_kdd15_'+campaign+'.txt'
+            ifname = IFROOT_KDD15+campaign+'/baseline_kdd15_'+campaign+'.txt'
             fin = open(ifname,'r')
             lines = fin.readlines()
             for line in lines:

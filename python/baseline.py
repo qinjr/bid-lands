@@ -146,8 +146,8 @@ def baseline(info):
     return q,w
 
 if __name__ == '__main__':
-    IFROOT = '..\\make-ipinyou-data\\'
-    OFROOT = '..\\data\\SurvivalModel\\'
+    IFROOT = '../make-ipinyou-data/'
+    OFROOT = '../data/SurvivalModel/'
     BASE_BID = '0'
     suffix_list = ['n','s','f']
     q = {}
@@ -172,37 +172,37 @@ if __name__ == '__main__':
                 q[campaign][mode][laplace] = []
                 w[campaign][mode][laplace] = []
                 # create os directory
-                if not os.path.exists(OFROOT+campaign+'\\'+modeName):
-                    os.makedirs(OFROOT+campaign+'\\'+modeName)
+                if not os.path.exists(OFROOT+campaign+'/'+modeName):
+                    os.makedirs(OFROOT+campaign+'/'+modeName)
                 # info assignment
                 info.campaign = campaign
-                info.fname_trainlog = IFROOT+campaign+'\\train.log.txt'
-                info.fname_testlog = IFROOT+campaign+'\\test.log.txt'
-                info.fname_nodeData = OFROOT+campaign+'\\'+modeName+'\\nodeData_'+campaign+suffix+'.txt'
-                info.fname_nodeInfo = OFROOT+campaign+'\\'+modeName+'\\nodeInfos_'+campaign+suffix+'.txt'
+                info.fname_trainlog = IFROOT+campaign+'/train.log.txt'
+                info.fname_testlog = IFROOT+campaign+'/test.log.txt'
+                info.fname_nodeData = OFROOT+campaign+'/'+modeName+'/nodeData_'+campaign+suffix+'.txt'
+                info.fname_nodeInfo = OFROOT+campaign+'/'+modeName+'/nodeInfos_'+campaign+suffix+'.txt'
 
-                info.fname_trainbid = IFROOT+campaign+'\\train_bid.txt'
-                info.fname_testbid = IFROOT+campaign+'\\test_bid.txt'
-                info.fname_baseline = OFROOT+campaign+'\\'+modeName+'\\baseline_'+campaign+suffix+'.txt'
+                info.fname_trainbid = IFROOT+campaign+'/train_bid.txt'
+                info.fname_testbid = IFROOT+campaign+'/test_bid.txt'
+                info.fname_baseline = OFROOT+campaign+'/'+modeName+'/baseline_'+campaign+suffix+'.txt'
 
-                info.fname_monitor = OFROOT+campaign+'\\'+modeName+'\\monitor_'+campaign+suffix+'.txt'
-                info.fname_testKmeans = OFROOT+campaign+'\\'+modeName+'\\testKmeans_'+campaign+suffix+'.txt'
-                info.fname_testSurvival = OFROOT+campaign+'\\'+modeName+'\\testSurvival_'+campaign+suffix+'.txt'
+                info.fname_monitor = OFROOT+campaign+'/'+modeName+'/monitor_'+campaign+suffix+'.txt'
+                info.fname_testKmeans = OFROOT+campaign+'/'+modeName+'/testKmeans_'+campaign+suffix+'.txt'
+                info.fname_testSurvival = OFROOT+campaign+'/'+modeName+'/testSurvival_'+campaign+suffix+'.txt'
 
-                info.fname_evaluation = OFROOT+campaign+'\\'+modeName+'\\evaluation_'+campaign+suffix+'.txt'
-                info.fname_baseline_q = OFROOT+campaign+'\\'+modeName+'\\baseline_q_'+campaign+suffix+'.txt'
-                info.fname_tree_q = OFROOT+campaign+'\\'+modeName+'\\tree_q_'+campaign+suffix+'.txt'
-                info.fname_baseline_w = OFROOT+campaign+'\\'+modeName+'\\baseline_w_'+campaign+suffix+'.txt'
-                info.fname_tree_w = OFROOT+campaign+'\\'+modeName+'\\tree_w_'+campaign+suffix+'.txt'
+                info.fname_evaluation = OFROOT+campaign+'/'+modeName+'/evaluation_'+campaign+suffix+'.txt'
+                info.fname_baseline_q = OFROOT+campaign+'/'+modeName+'/baseline_q_'+campaign+suffix+'.txt'
+                info.fname_tree_q = OFROOT+campaign+'/'+modeName+'/tree_q_'+campaign+suffix+'.txt'
+                info.fname_baseline_w = OFROOT+campaign+'/'+modeName+'/baseline_w_'+campaign+suffix+'.txt'
+                info.fname_tree_w = OFROOT+campaign+'/'+modeName+'/tree_w_'+campaign+suffix+'.txt'
 
-                info.fname_pruneNode = OFROOT+campaign+'\\'+modeName+'\\pruneNode_'+campaign+suffix+'.txt'
-                info.fname_pruneEval = OFROOT+campaign+'\\'+modeName+'\\pruneEval_'+campaign+suffix+'.txt'
-                info.fname_testwin = OFROOT+campaign+'\\'+modeName+'\\testwin_'+campaign+suffix+'.txt'
+                info.fname_pruneNode = OFROOT+campaign+'/'+modeName+'/pruneNode_'+campaign+suffix+'.txt'
+                info.fname_pruneEval = OFROOT+campaign+'/'+modeName+'/pruneEval_'+campaign+suffix+'.txt'
+                info.fname_testwin = OFROOT+campaign+'/'+modeName+'/testwin_'+campaign+suffix+'.txt'
 
                 q[campaign][mode][laplace],w[campaign][mode][laplace] = baseline(info)
 
         if len(MODE_LIST)==3:
-            fdir = OFROOT+campaign+'\\compare\\'
+            fdir = OFROOT+campaign+'/compare/'
             if not os.path.exists(fdir):
                 os.makedirs(fdir)
 
@@ -262,7 +262,7 @@ if __name__ == '__main__':
             title("market price probability compare")
             xlabel("market price")
             ylabel("market price probability")
-            savefig(fdir+'\\q_'+campaign+'_l'+str(laplace)+'.png')
+            savefig(fdir+'/q_'+campaign+'_l'+str(laplace)+'.png')
             close(1)
 
             figure(2)
@@ -272,5 +272,5 @@ if __name__ == '__main__':
             title("win probability compare")
             xlabel("market price")
             ylabel("win probability")
-            savefig(fdir+'\\w_'+campaign+'_l'+str(laplace)+'.png')
+            savefig(fdir+'/w_'+campaign+'_l'+str(laplace)+'.png')
             close(2)
