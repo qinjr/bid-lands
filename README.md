@@ -1,6 +1,6 @@
 
 # BASELINE4DRSA_STM
-This repo is forked from [STM](https://github.com/zeromike/bid-lands), I modified some code in the repo to make it a baseline model for [DRSA](https://github.com/rk2900/drsa), which is the implementation of the model proposed in a AAAI'18 submitted paper.
+This repo is forked from [STM](https://github.com/zeromike/bid-lands), I modified some code in the repo to make it a baseline model for [DRSA](https://github.com/rk2900/drsa), which is the implementation of the model proposed in a AAAI'19 submitted paper.
 Many thanks to the authors of `STM`.
 
 ### Data Preparation
